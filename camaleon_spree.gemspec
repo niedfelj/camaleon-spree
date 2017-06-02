@@ -18,6 +18,5 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails"
-  # s.add_dependency "camaleon_cms", '>=2.4.3'
   s.add_development_dependency "sqlite3"
 end

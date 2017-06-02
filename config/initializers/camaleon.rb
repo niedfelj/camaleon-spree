@@ -79,11 +79,11 @@ Rails.application.config.to_prepare do
     alias_method :cama_admin_logout_url, :cama_admin_logout_path
   end
 
-  # custom models
   CamaleonCms::User.class_eval do
     alias_attribute :last_login_at, :last_sign_in_at
     alias_attribute :username, :login
     after_create :check_user_role
+
 
     has_many :spree_roles, through: :role_users, class_name: 'Spree::Role', source: :role, after_add: :cama_update_roles, after_remove: :cama_update_roles
     def has_spree_role?(role_in_question)
@@ -101,4 +101,5 @@ Rails.application.config.to_prepare do
       self.update_column(:role, spree_roles.where(spree_roles: {name: 'admin'}).any? ? 'admin' : 'user')
     end
   end
+
 end

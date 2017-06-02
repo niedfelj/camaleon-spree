@@ -26,27 +26,26 @@ Rails.application.config.to_prepare do
       insert_bottom: '[data-hook="admin_product_form_additional_fields"]',
       partial: '/plugins/camaleon_spree/admin/render_custom_fields_product'
   )
+
   Deface::Override.new(
-      virtual_path: 'spree/admin/products/new',
-      name: 'cama_custom_fields_on_create',
-      insert_bottom: '[data-hook="new_product_attrs"]',
-      partial: '/plugins/camaleon_spree/admin/render_custom_fields_product'
+      virtual_path: 'spree/products/show',
+      name: 'cama_product_view_custom_fields',
+      insert_bottom: '[data-hook="product_taxons"]',
+      partial: '/plugins/camaleon_spree/front/product_custom_fields'
   )
+
 
   # spree product add custom fields support
   Spree::Product.class_eval do
     include CamaleonCms::Metas
     include CamaleonCms::CustomFieldsRead
-    include CamaleonCms::CustomFieldsConcern
     def get_field_groups(args = {}) # needs to fix for multisite&multistore support
       CamaleonCms::CustomFieldGroup.where(object_class: self.class.name)
     end
-
   end
 
 
   Spree::Admin::ProductsController.class_eval do
-    create.after :save_custom_fields
     update.after :save_custom_fields
 
     private
